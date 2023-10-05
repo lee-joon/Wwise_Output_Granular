@@ -62,7 +62,7 @@ public:
 		const AkAudioObjects& in_objects,	///< Input objects and object audio buffers.
 		const AkAudioObjects& out_objects	///< Output objects and object audio buffers.
 		) override;
-	AkVector ComputeRandomPosition(const AkVector& Position);
+	void ComputeRandomPosition(const AkVector& Position, AkVector&);
 
 	AkMixerInputMap<AkUInt64, GranularManager> m_OutBuffer;
 private:

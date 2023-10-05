@@ -194,7 +194,9 @@ void Granular_Processor_2FX::Execute(
 						pObject->positioning.behavioral.spatMode = AK_SpatializationMode_PositionOnly;//AK_SpatializationMode_None;//inobj->positioning.behavioral.spatMode;
 						pObject->positioning.threeD = inobj->positioning.threeD;
 
-						AkVector pos = ComputeRandomPosition(inobj->positioning.threeD.xform.Position());
+						AkVector pos;
+						pos.Zero();
+						ComputeRandomPosition(inobj->positioning.threeD.xform.Position(), pos);
 						pObject->positioning.threeD.xform.SetPosition(pos);
 
 						pEntry->Push_Back_Manager(pObject->key, m_MaxLength/*p*/, m_MinLength/*p*/);//<-- º¯°æ
@@ -265,7 +267,9 @@ void Granular_Processor_2FX::Execute(
 							TempOutObj->uValidFrames = pinbuf->uValidFrames;
 							if (outManager->ProcessorRendering(TempOutObj->GetChannel(0), TempOutObj->uValidFrames, TempOutObj->eState))
 							{
-								AkVector pos = ComputeRandomPosition(in_objects.ppObjects[it->pUserData->m_numInObj]->positioning.threeD.xform.Position());
+								AkVector pos;
+								pos.Zero();
+								ComputeRandomPosition(in_objects.ppObjects[it->pUserData->m_numInObj]->positioning.threeD.xform.Position(), pos);
 								outputObjects.ppObjects[numOut]->positioning.threeD.xform.SetPosition(pos);
 							}
 
@@ -308,11 +312,11 @@ void Granular_Processor_2FX::Execute(
 	}
 }
 
-AkVector Granular_Processor_2FX::ComputeRandomPosition(const AkVector& Position)
+void Granular_Processor_2FX::ComputeRandomPosition(const AkVector& Position, AkVector& CopyVector)
 {
-	AkVector TempVector;
-	TempVector.X = Position.X + m_Noise.nextValue() * m_pParams->RTPC.Pos_Range;
-	TempVector.Y = Position.Y + m_Noise.nextValue() * m_pParams->RTPC.Pos_Range;
-	TempVector.Z = Position.Z + m_Noise.nextValue() * m_pParams->RTPC.Pos_Range;
-	return TempVector;
+
+	CopyVector.X = Position.X + m_Noise.nextValue() * m_pParams->RTPC.Pos_Range;
+	CopyVector.Y = Position.Y + m_Noise.nextValue() * m_pParams->RTPC.Pos_Range;
+	CopyVector.Z = Position.Z + m_Noise.nextValue() * m_pParams->RTPC.Pos_Range;
+
 }
